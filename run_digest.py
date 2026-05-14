@@ -39,6 +39,8 @@ from jurisdictions import JURISDICTIONS, JURISDICTION_MAP
 from fetchers.legistar import fetch_legistar_agendas
 from fetchers.granicus import fetch_granicus_agendas
 from fetchers.civicengage import fetch_civicengage_agendas
+from fetchers.hyland_cloud import fetch_hyland_cloud_agendas
+from fetchers.swagit import fetch_swagit_agendas
 from fetchers.county_bos import fetch_bos_agendas
 from utils.filter import filter_agenda_for_relevance
 from utils.formatter import format_digest
@@ -48,6 +50,8 @@ FETCHERS = {
     "legistar": fetch_legistar_agendas,
     "granicus": fetch_granicus_agendas,
     "civicengage": fetch_civicengage_agendas,
+    "hyland_cloud": fetch_hyland_cloud_agendas,
+    "swagit": fetch_swagit_agendas,
     "legacy": fetch_civicengage_agendas,  # same logic, different URLs
     "escribemeetings": fetch_civicengage_agendas,  # generic PDF scraper fallback
     "municode": fetch_civicengage_agendas,          # generic PDF scraper fallback

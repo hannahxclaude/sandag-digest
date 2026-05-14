@@ -4,24 +4,29 @@ All 19 member jurisdictions with their platform type and agenda URL.
 """
 
 JURISDICTIONS = [
-    # --- LEGISTAR (has structured API) ---
-    {
-        "name": "City of San Diego",
-        "platform": "legistar",
-        "legistar_client": "sandiego",
-        "notes": "Highest volume. Meets 2x/month Mondays.",
-    },
+    # --- LEGISTAR ---
     {
         "name": "Oceanside",
         "platform": "legistar",
         "legistar_client": "oceanside",
         "notes": "Verified working. Meets 2x/month.",
     },
+
+    # --- HYLAND CLOUD (San Diego migrated from Legistar ~2025) ---
+    {
+        "name": "City of San Diego",
+        "platform": "hyland_cloud",
+        "agenda_url": "https://sandiego.hylandcloud.com/211agendaonlinecouncil",
+        "notes": "Highest volume. Meets 2x/month Mon+Tue. Migrated from Legistar to Hyland Cloud.",
+    },
+
+    # --- SWAGIT (National City — main site 403-blocked, Swagit has agendas + PDFs) ---
     {
         "name": "National City",
-        "platform": "legistar",
-        "legistar_client": "nationalcity",
-        "notes": "High relevance — border-adjacent, transit-rich.",
+        "platform": "swagit",
+        "agenda_url": "https://nationalcityca.new.swagit.com/views/33",
+        "swagit_base": "https://nationalcityca.new.swagit.com",
+        "notes": "High relevance — border-adjacent, transit-rich. Main site Akamai-blocked; Swagit works.",
     },
 
     # --- GRANICUS ---

@@ -63,7 +63,12 @@ def _parse_pdf_links(html: str, page_url: str, name: str) -> list[dict]:
         href_lower = href.lower()
         text_lower = text.lower()
 
-        if ".pdf" not in href_lower and "pdf" not in href_lower:
+        # Standard PDF links
+        is_pdf_link = ".pdf" in href_lower or "pdf" in href_lower
+        # CivicPlus AgendaCenter ViewFile links (no .pdf extension but serve PDFs)
+        is_agendacenter = "agendacenter/viewfile/agenda/" in href_lower
+
+        if not is_pdf_link and not is_agendacenter:
             continue
         if "minute" in text_lower and "agenda" not in text_lower:
             continue
@@ -148,7 +153,7 @@ def _parse_date_from_text(s: str) -> datetime | None:
     patterns = [
         r"(\d{2})-(\d{2})-(20\d{2})",
         r"(\d{2})\.(\d{2})\.(20\d{2})",
-        r"(\d{2})(\d{2})(20\d{2})",
+        r"(\d{2})(\d{2})(20\d{2})",  # also matches AgendaCenter _MMDDYYYY pattern
         r"(20\d{2})-(\d{2})-(\d{2})",
     ]
     for pattern in patterns:
