@@ -18,7 +18,11 @@ import os
 import sys
 import json
 import argparse
+import smtplib
+import ssl
 from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from pathlib import Path
 
 # Load .env before any module imports so API keys are available at import time
