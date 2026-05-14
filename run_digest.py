@@ -58,6 +58,22 @@ FETCHERS = {
 TEST_JURISDICTIONS = ["Oceanside", "Encinitas", "County of San Diego (BOS)"]
 
 
+SEEN_FILE = Path(__file__).parent / "seen_agendas.json"
+
+
+def load_seen() -> set:
+    if SEEN_FILE.exists():
+        try:
+            return set(json.loads(SEEN_FILE.read_text()))
+        except Exception:
+            pass
+    return set()
+
+
+def save_seen(seen: set) -> None:
+    SEEN_FILE.write_text(json.dumps(sorted(seen), indent=2))
+
+
 def run(jurisdictions_to_run: list[dict], verbose: bool = True) -> dict:
     """
     Full pipeline: fetch → filter → format.
@@ -68,6 +84,9 @@ def run(jurisdictions_to_run: list[dict], verbose: bool = True) -> dict:
     print(f"SANDAG Agenda Digest — {run_date}")
     print(f"Jurisdictions: {len(jurisdictions_to_run)}")
     print(f"{'='*60}\n")
+
+    seen = load_seen()
+    print(f"Loaded seen state: {len(seen)} agenda(s) already processed\n")
 
     all_agendas = []
 
@@ -85,18 +104,24 @@ def run(jurisdictions_to_run: list[dict], verbose: bool = True) -> dict:
         try:
             agendas = fetcher(j)
             if agendas:
-                print(f"   ✓ Got {len(agendas)} agenda(s)")
-                all_agendas.extend(agendas)
+                # Deduplicate: skip agendas whose URL we've already processed
+                new_agendas = [a for a in agendas if a.get("agenda_url") not in seen]
+                skipped = len(agendas) - len(new_agendas)
+                if new_agendas:
+                    print(f"   ✓ Got {len(new_agendas)} agenda(s)" + (f" ({skipped} already seen)" if skipped else ""))
+                    all_agendas.extend(new_agendas)
+                else:
+                    print(f"   ○ All {len(agendas)} agenda(s) already seen")
             else:
                 print(f"   ○ No agendas found in date window")
         except Exception as e:
             print(f"   ✗ Error: {e}")
             continue
 
-    print(f"\n📋 Fetched {len(all_agendas)} agenda(s) total\n")
+    print(f"\n📋 Fetched {len(all_agendas)} new agenda(s) total\n")
 
     if not all_agendas:
-        print("No agendas fetched. Check network connectivity and URLs.")
+        print("No new agendas to process.")
         return {}
 
     # --- FILTER ---
@@ -145,6 +170,12 @@ def run(jurisdictions_to_run: list[dict], verbose: bool = True) -> dict:
     slim = [{k: v for k, v in a.items() if k != "text"} for a in filtered_agendas]
     json_path.write_text(json.dumps(slim, indent=2), encoding="utf-8")
     print(f"💾 Raw JSON saved: {json_path}")
+
+    # --- UPDATE SEEN ---
+    new_urls = {a["agenda_url"] for a in all_agendas if a.get("agenda_url")}
+    seen.update(new_urls)
+    save_seen(seen)
+    print(f"📌 Updated seen_agendas.json (+{len(new_urls)} new URLs, {len(seen)} total)\n")
 
     # --- EMAIL ---
     if os.environ.get("GMAIL_ADDRESS") and os.environ.get("RECIPIENT_EMAIL"):
