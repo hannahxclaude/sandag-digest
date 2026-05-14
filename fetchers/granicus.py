@@ -13,7 +13,13 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from utils.pdf_extractor import extract_pdf_text
 
-HEADERS = {"User-Agent": "SANDAG-Digest/1.0 (public records research)"}
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    )
+}
 LOOKBACK_DAYS = 3
 LOOKAHEAD_DAYS = 7
 

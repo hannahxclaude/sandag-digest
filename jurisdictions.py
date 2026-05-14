@@ -34,10 +34,9 @@ JURISDICTIONS = [
     },
     {
         "name": "San Marcos",
-        "platform": "granicus",
-        "agenda_url": "https://www.san-marcos.net/your-government/agendas-minutes/city-council-agendas",
-        "granicus_base": "https://sanmarcos.granicus.com",
-        "notes": "Meets 2x/month Tuesdays.",
+        "platform": "civicengage",
+        "agenda_url": "https://www.sanmarcosca.gov/City-Government/City-Council/Council-Meetings",
+        "notes": "Meets 2x/month Tuesdays. Old Granicus URL defunct — now on sanmarcosca.gov.",
     },
 
     # --- ESCRIBEMEETINGS ---
@@ -78,7 +77,7 @@ JURISDICTIONS = [
     {
         "name": "Del Mar",
         "platform": "civicengage",
-        "agenda_url": "https://www.delmar.ca.us/government/city-clerk/agendas-minutes",
+        "agenda_url": "https://www.delmar.ca.us/AgendaCenter",
         "notes": "Small city, low volume.",
     },
     {
@@ -96,8 +95,8 @@ JURISDICTIONS = [
     {
         "name": "Lemon Grove",
         "platform": "civicengage",
-        "agenda_url": "https://www.lemongrove.ca.gov/city-hall/city-council/current-city-council-meeting-agenda",
-        "notes": "Small city, low volume.",
+        "agenda_url": "https://events.lemongrove.ca.gov/council",
+        "notes": "Small city, low volume. Agendas on events subdomain.",
     },
     {
         "name": "Poway",
